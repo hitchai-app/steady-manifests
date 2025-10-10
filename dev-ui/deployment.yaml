@@ -1,22 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: web
+  name: dev-ui
   labels:
-    app: web
+    app: dev-ui
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: web
+      app: dev-ui
   template:
     metadata:
       labels:
-        app: web
+        app: dev-ui
     spec:
       containers:
-      - name: web
-        image: ghcr.io/hitchai-app/web:latest
+      - name: dev-ui
+        image: ghcr.io/hitchai-app/dev-ui:latest
         ports:
         - containerPort: 3000
           name: http
