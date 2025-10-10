@@ -1,0 +1,56 @@
+name: Update Image
+
+on:
+  repository_dispatch:
+    types: [image_update]
+
+permissions:
+  contents: write    # Required to commit and push changes
+
+jobs:
+  update-manifest:
+    name: Update Deployment Manifest
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.client_payload.environment == 'prod' && 'prod' || 'stage' }}
+
+      - name: Update image in deployment manifest
+        run: |
+          SERVICE="${{ github.event.client_payload.service }}"
+          IMAGE="${{ github.event.client_payload.image }}"
+          ENVIRONMENT="${{ github.event.client_payload.environment }}"
+
+          echo "Updating $SERVICE in $ENVIRONMENT environment"
+          echo "New image: $IMAGE"
+
+          # Update deployment.yaml
+          sed -i "s|image: ghcr.io/hitchai-app/${SERVICE}:.*|image: ${IMAGE}|" ${SERVICE}/deployment.yaml
+
+          # Update migration-job.yaml if it exists
+          if [ -f "${SERVICE}/migration-job.yaml" ]; then
+            sed -i "s|image: ghcr.io/hitchai-app/${SERVICE}:.*|image: ${IMAGE}|" ${SERVICE}/migration-job.yaml
+          fi
+
+          # Show changes
+          echo "=== Changes ==="
+          git diff ${SERVICE}/
+
+      - name: Commit and push changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git add ${{ github.event.client_payload.service }}/
+
+          git commit -m "chore(${{ github.event.client_payload.service }}): update image
+
+          Image: ${{ github.event.client_payload.image }}
+          Environment: ${{ github.event.client_payload.environment }}
+          Source commit: ${{ github.event.client_payload.commit }}
+          Source branch: ${{ github.event.client_payload.branch }}"
+
+          git push
