@@ -1,7 +1,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: web
+  name: dev-ui
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-prod
 spec:
@@ -9,7 +9,7 @@ spec:
   tls:
   - hosts:
     - app.steady.example.com  # Update with actual domain
-    secretName: web-tls
+    secretName: dev-ui-tls
   rules:
   - host: app.steady.example.com  # Update with actual domain
     http:
@@ -18,6 +18,6 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: web
+            name: dev-ui
             port:
               number: 3000
