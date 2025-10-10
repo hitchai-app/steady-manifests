@@ -1,0 +1,9 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Database
+metadata:
+  name: platform-db
+spec:
+  cluster:
+    name: postgres-shared
+  name: platform_db
+  owner: platform_user
