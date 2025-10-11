@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: inference-backend
-        image: ghcr.io/hitchai-app/inference-backend:prod-da6d5ee6ca0396a3d23808b06f91ea0fbced04bf
+        image: ghcr.io/hitchai-app/inference-backend:prod-b8de513b2f5c8820a89f9b0d2ea5fbc7b36411b5
         ports:
         - containerPort: 3000
           name: http
