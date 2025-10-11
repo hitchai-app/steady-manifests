@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: platform-backend
-        image: ghcr.io/hitchai-app/platform-backend:prod-5174271963c704c6fbdb6406f6400240298cc54e
+        image: ghcr.io/hitchai-app/platform-backend:prod-2ee9da63bef249134903094568101363aaeedcbd
         ports:
         - containerPort: 3000
           name: http
