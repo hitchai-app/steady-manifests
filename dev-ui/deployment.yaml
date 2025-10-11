@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: dev-ui
-        image: ghcr.io/hitchai-app/dev-ui:prod-85fdd4dfb22e4d1b9c4c5a88d78ad3e6985f377e
+        image: ghcr.io/hitchai-app/dev-ui:prod-a76c633fdecc62a4ee0db20aae18234eeeab8a90
         ports:
         - containerPort: 3000
           name: http
