@@ -45,11 +45,22 @@ spec:
           value: "6379"
         - name: LITELLM_MODE
           value: PRODUCTION
-        - name: DATABASE_URL
+        - name: DB_USER
           valueFrom:
             secretKeyRef:
-              name: postgres-litellm-user
-              key: uri
+              name: postgres-app
+              key: username
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: postgres-app
+              key: password
+        - name: DB_HOST
+          value: postgres-rw
+        - name: DB_PORT
+          value: "5432"
+        - name: DATABASE_URL
+          value: "postgresql://$(DB_USER):$(DB_PASSWORD)@$(DB_HOST):$(DB_PORT)/litellm_db"
         volumeMounts:
         - name: config
           mountPath: /app/config.yaml
