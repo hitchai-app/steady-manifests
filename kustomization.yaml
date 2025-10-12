@@ -6,6 +6,8 @@ namespace: steady-stage
 resources:
 # Secrets
 - secrets/ghcr-pull-secret-sealed.yaml
+- secrets/postgres-litellm-user-sealed.yaml
+- secrets/postgres-platform-user-sealed.yaml
 
 # Infrastructure
 - infrastructure/postgres/overlays/stage
