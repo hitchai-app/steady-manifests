@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: platform-backend-migration
+  name: litellm-migration
   annotations:
     argocd.argoproj.io/sync-wave: "1"
 spec:
@@ -13,16 +13,14 @@ spec:
       - name: ghcr-pull-secret
       containers:
       - name: migrate
-        image: ghcr.io/hitchai-app/platform-backend:latest
-        command: ["node", "dist/db/migrate.js"]
+        image: ghcr.io/berriai/litellm:main-latest
+        command: ["prisma", "migrate", "deploy"]
         env:
         - name: DATABASE_URL
           valueFrom:
             secretKeyRef:
-              name: postgres-platform-user
+              name: postgres-litellm-user
               key: uri
-        - name: NODE_ENV
-          value: "production"
         resources:
           requests:
             memory: "128Mi"
