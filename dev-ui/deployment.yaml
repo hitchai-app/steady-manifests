@@ -14,6 +14,8 @@ spec:
       labels:
         app: dev-ui
     spec:
+      imagePullSecrets:
+      - name: ghcr-pull-secret
       containers:
       - name: dev-ui
         image: ghcr.io/hitchai-app/dev-ui:prod-0c4d2112ab8139caac21585dd292705062586aea
