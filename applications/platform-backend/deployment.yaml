@@ -25,22 +25,11 @@ spec:
         env:
         - name: NODE_ENV
           value: "production"
-        - name: DB_USER
-          valueFrom:
-            secretKeyRef:
-              name: postgres-app
-              key: username
-        - name: DB_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: postgres-app
-              key: password
-        - name: DB_HOST
-          value: postgres-rw
-        - name: DB_PORT
-          value: "5432"
         - name: DATABASE_URL
-          value: "postgresql://$(DB_USER):$(DB_PASSWORD)@$(DB_HOST):$(DB_PORT)/platform_db"
+          valueFrom:
+            secretKeyRef:
+              name: postgres-platform-user
+              key: uri
         - name: REDIS_URL
           value: "redis://valkey:6379"
         - name: CENTRIFUGO_URL

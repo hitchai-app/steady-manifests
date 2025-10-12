@@ -7,3 +7,4 @@ spec:
     name: postgres
   name: platform_db
   owner: platform-user
+  ensure: present

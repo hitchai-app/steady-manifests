@@ -7,3 +7,4 @@ spec:
     name: postgres
   name: litellm_db
   owner: litellm-user
+  ensure: present

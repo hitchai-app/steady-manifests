@@ -24,11 +24,15 @@ spec:
       login: true
       createdb: false
       createrole: false
+      passwordSecret:
+        name: postgres-litellm-user
     - name: platform-user
       ensure: present
       login: true
       createdb: false
       createrole: false
+      passwordSecret:
+        name: postgres-platform-user
 
   backup:
     retentionPolicy: "30d"
