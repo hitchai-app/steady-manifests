@@ -1,9 +1,0 @@
-apiVersion: postgresql.cnpg.io/v1
-kind: Database
-metadata:
-  name: inference-db
-spec:
-  cluster:
-    name: postgres-shared
-  name: inference_db
-  owner: inference_user

@@ -25,11 +25,6 @@ spec:
         env:
         - name: NODE_ENV
           value: "production"
-        - name: DATABASE_URL
-          valueFrom:
-            secretKeyRef:
-              name: inference-db-credentials
-              key: uri
         - name: REDIS_URL
           value: "redis://valkey:6379"
         - name: CENTRIFUGO_URL

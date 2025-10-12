@@ -4,6 +4,6 @@ metadata:
   name: platform-db
 spec:
   cluster:
-    name: postgres-shared
+    name: postgres
   name: platform_db
   owner: platform_user
