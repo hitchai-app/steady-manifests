@@ -53,7 +53,6 @@ spec:
               key: api-key
         command:
         - centrifugo
-        - --health
         args:
         - --admin_password=$(ADMIN_PASSWORD)
         - --admin_secret=$(ADMIN_SECRET)
