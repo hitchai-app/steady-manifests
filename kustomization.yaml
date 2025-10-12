@@ -4,6 +4,9 @@ kind: Kustomization
 namespace: steady-prod
 
 resources:
+# Secrets
+- secrets/ghcr-pull-secret-sealed.yaml
+
 # Infrastructure
 - infrastructure/postgres/overlays/prod
 - infrastructure/valkey/overlays/prod
