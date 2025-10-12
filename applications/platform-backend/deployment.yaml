@@ -28,12 +28,22 @@ spec:
         - name: DATABASE_URL
           valueFrom:
             secretKeyRef:
-              name: platform-db-credentials
+              name: postgres-platform_user
               key: uri
         - name: REDIS_URL
           value: "redis://valkey:6379"
         - name: CENTRIFUGO_URL
           value: "http://centrifugo:8000"
+        - name: CENTRIFUGO_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: centrifugo-secrets
+              key: api-key
+        - name: CENTRIFUGO_JWT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: centrifugo-secrets
+              key: admin-secret
         resources:
           requests:
             memory: "256Mi"

@@ -4,6 +4,7 @@ metadata:
   name: postgres
 spec:
   instances: 1
+  imageName: ghcr.io/cloudnative-pg/postgresql:18.0
 
   postgresql:
     parameters:
@@ -19,6 +20,11 @@ spec:
   managed:
     roles:
     - name: litellm_user
+      ensure: present
+      login: true
+      createdb: false
+      createrole: false
+    - name: platform_user
       ensure: present
       login: true
       createdb: false
