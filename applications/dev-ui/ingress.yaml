@@ -8,10 +8,10 @@ spec:
   ingressClassName: traefik
   tls:
   - hosts:
-    - app.steady.example.com  # Update with actual domain
+    - app.steady.ops.last-try.org
     secretName: dev-ui-tls
   rules:
-  - host: app.steady.example.com  # Update with actual domain
+  - host: app.steady.ops.last-try.org
     http:
       paths:
       - path: /
