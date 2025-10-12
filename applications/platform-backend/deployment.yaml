@@ -30,8 +30,10 @@ spec:
             secretKeyRef:
               name: postgres-platform-user
               key: uri
-        - name: REDIS_URL
-          value: "redis://valkey:6379"
+        - name: REDIS_HOST
+          value: "valkey"
+        - name: REDIS_PORT
+          value: "6379"
         - name: CENTRIFUGO_URL
           value: "http://centrifugo:8000"
         - name: CENTRIFUGO_API_KEY
