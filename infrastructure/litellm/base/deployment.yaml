@@ -54,6 +54,8 @@ spec:
             secretKeyRef:
               name: postgres-litellm-user
               key: uri
+        - name: USE_PRISMA_MIGRATE
+          value: "True"
         volumeMounts:
         - name: config
           mountPath: /app/config.yaml
