@@ -48,7 +48,7 @@ spec:
         - name: DATABASE_URL
           valueFrom:
             secretKeyRef:
-              name: postgres-litellm_user
+              name: postgres-litellm-user
               key: uri
         volumeMounts:
         - name: config

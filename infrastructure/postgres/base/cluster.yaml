@@ -19,12 +19,12 @@ spec:
 
   managed:
     roles:
-    - name: litellm_user
+    - name: litellm-user
       ensure: present
       login: true
       createdb: false
       createrole: false
-    - name: platform_user
+    - name: platform-user
       ensure: present
       login: true
       createdb: false

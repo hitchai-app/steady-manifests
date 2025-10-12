@@ -28,7 +28,7 @@ spec:
         - name: DATABASE_URL
           valueFrom:
             secretKeyRef:
-              name: postgres-platform_user
+              name: postgres-platform-user
               key: uri
         - name: REDIS_URL
           value: "redis://valkey:6379"
