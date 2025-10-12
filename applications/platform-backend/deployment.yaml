@@ -2,6 +2,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: platform-backend
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
   labels:
     app: platform-backend
 spec:
