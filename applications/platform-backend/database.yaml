@@ -6,4 +6,4 @@ spec:
   cluster:
     name: postgres
   name: platform_db
-  owner: platform_user
+  owner: platform-user

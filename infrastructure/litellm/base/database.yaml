@@ -6,4 +6,4 @@ spec:
   cluster:
     name: postgres
   name: litellm_db
-  owner: litellm_user
+  owner: litellm-user
