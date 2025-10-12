@@ -4,6 +4,9 @@ kind: Kustomization
 namespace: steady-stage
 
 resources:
+# Secrets
+- secrets/ghcr-pull-secret-sealed.yaml
+
 # Infrastructure
 - infrastructure/postgres/overlays/stage
 - infrastructure/valkey/overlays/stage
