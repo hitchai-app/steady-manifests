@@ -13,9 +13,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Generate GitHub App token
+        id: app_token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.APP_ID }}
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
+
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
+          token: ${{ steps.app_token.outputs.token }}
           ref: ${{ github.event.client_payload.environment == 'prod' && 'prod' || 'stage' }}
 
       - name: Update image in deployment manifest

@@ -1,0 +1,87 @@
+name: Claude Code Review
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+    # Optional: Only run on specific file changes
+    # paths:
+    #   - "applications/**/*.yaml"
+    #   - "infrastructure/**/*.yaml"
+
+jobs:
+  claude-review:
+    # Optional: Filter by PR author
+    # if: |
+    #   github.event.pull_request.user.login == 'external-contributor' ||
+    #   github.event.pull_request.user.login == 'new-developer' ||
+    #   github.event.pull_request.author_association == 'FIRST_TIME_CONTRIBUTOR'
+
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write # Allow creating reviews and comments
+      issues: write # Allow commenting on issues
+      id-token: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Run Claude Code Review
+        id: claude-review
+        uses: anthropics/claude-code-action@beta
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+
+          # Allow all bots to trigger the review
+          allowed_bots: '*'
+
+          # Use sticky comments for consistent review updates
+          use_sticky_comment: true
+
+          # Allow gh CLI for PR reviews
+          allowed_tools: |
+            Bash(gh pr:*)
+
+          # Direct prompt for automated review (no @claude mention needed)
+          direct_prompt: |
+            You are reviewing PR #${{ github.event.pull_request.number }} in ${{ github.repository }}.
+
+            REVIEW PROCESS:
+            1. **Provide detailed review feedback in THIS comment** (action creates this automatically)
+            2. Get PR diff: `gh pr diff ${{ github.event.pull_request.number }}`
+            3. Review CLAUDE.md for architectural context
+            4. Analyze changes against review criteria
+            5. **Submit clean formal review WITHOUT duplicate content:**
+               - APPROVE: `gh pr review ${{ github.event.pull_request.number }} --approve` (no --body to avoid duplicates)
+               - REQUEST_CHANGES: `gh pr review ${{ github.event.pull_request.number }} --request-changes`
+               - COMMENT: `gh pr review ${{ github.event.pull_request.number }} --comment`
+
+            **USE SUGGESTION BLOCKS** for actionable fixes (one-click apply):
+            ```suggestion
+            fixed code here
+            ```
+
+            Review criteria (GitOps manifest repository - changes affect production):
+            - What will fail in production (ArgoCD sync failures, pod crashes)
+            - Resource limits and cluster impact
+            - Breaking changes to existing workloads
+            - Security vulnerabilities (exposed secrets, missing RBAC)
+            - Image tag issues (missing tags, wrong registry)
+            - Database migration risks
+            - Missing validations or error handling
+            - Kustomize syntax errors
+            - SealedSecret format issues
+            - Alignment with CLAUDE.md patterns
+
+            Be skeptical and critical. If something looks wrong, it probably is.
+
+            Verdict rules:
+            - APPROVE: Only if no blocking issues AND aligns with CLAUDE.md
+            - REQUEST_CHANGES: If any blocking concerns exist
+            - COMMENT: For minor suggestions only
+
+            CRITICAL: Submit formal review with `gh pr review` - do NOT just post a comment!
+
