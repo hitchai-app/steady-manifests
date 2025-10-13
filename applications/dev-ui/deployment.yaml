@@ -30,9 +30,9 @@ spec:
         - name: NODE_ENV
           value: "production"
         - name: NEXT_PUBLIC_API_URL
-          value: "http://platform-backend:3000"
+          value: "https://api-stage.steady.ops.last-try.org"
         - name: NEXT_PUBLIC_WS_URL
-          value: "ws://centrifugo:8000"
+          value: "wss://ws-stage.steady.ops.last-try.org"
         resources:
           requests:
             memory: "256Mi"
