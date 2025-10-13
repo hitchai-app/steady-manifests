@@ -20,7 +20,7 @@ spec:
       - name: ghcr-pull-secret
       containers:
       - name: platform-backend
-        image: ghcr.io/hitchai-app/platform-backend:prod-e6896bb61c4d41db9664d7d208d3f4703bf25e27
+        image: ghcr.io/hitchai-app/platform-backend:prod-b4712ee8af5263676f24e6476b423589e00d71ee
         ports:
         - containerPort: 3000
           name: http
