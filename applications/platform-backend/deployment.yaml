@@ -48,6 +48,8 @@ spec:
             secretKeyRef:
               name: centrifugo-secrets
               key: admin-secret
+        - name: CORS_ORIGINS
+          value: "https://app-stage.steady.ops.last-try.org"
         resources:
           requests:
             memory: "256Mi"
