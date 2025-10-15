@@ -16,7 +16,7 @@ spec:
       containers:
       - name: migrate
         image: ghcr.io/hitchai-app/platform-backend:stage-5df0b602f6f67823e849a4781d91bd6119b98541
-        command: ["node", "dist/db/migrate.js"]
+        command: ["node", "dist/db/migrate.cli.js"]
         env:
         - name: DATABASE_URL
           valueFrom:
