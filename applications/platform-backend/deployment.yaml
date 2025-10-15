@@ -50,6 +50,16 @@ spec:
               key: admin-secret
         - name: CORS_ORIGINS
           value: "https://app-stage.steady.ops.last-try.org"
+        - name: GOOGLE_CLIENT_ID
+          valueFrom:
+            secretKeyRef:
+              name: google-oauth-stage
+              key: client-id
+        - name: GOOGLE_CLIENT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: google-oauth-stage
+              key: client-secret
         resources:
           requests:
             memory: "256Mi"

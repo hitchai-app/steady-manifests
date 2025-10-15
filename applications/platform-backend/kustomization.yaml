@@ -7,3 +7,4 @@ resources:
 - service.yaml
 - migration-job.yaml
 - ingress.yaml
+- google-oauth-secret.yaml
