@@ -31,6 +31,15 @@ spec:
           value: "http://centrifugo:8000"
         - name: LITELLM_URL
           value: "http://litellm:4000"
+        - name: LITELLM_API_URL
+          value: "http://litellm:4000"
+        - name: LITELLM_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: litellm-secrets
+              key: master-key
+        - name: PLATFORM_API_URL
+          value: "http://platform-backend:3000"
         resources:
           requests:
             memory: "256Mi"
