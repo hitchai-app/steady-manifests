@@ -31,6 +31,34 @@ spec:
           value: "http://centrifugo:8000"
         - name: LITELLM_URL
           value: "http://litellm:4000"
+        - name: LITELLM_API_URL
+          value: "http://litellm:4000"
+        - name: LITELLM_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: litellm-secrets
+              key: master-key
+        - name: PLATFORM_API_URL
+          value: "http://platform-backend:3000"
+        - name: PLATFORM_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: platform-api-secrets
+              key: api-key
+        - name: LANGFUSE_API_URL
+          value: "https://cloud.langfuse.com"
+        - name: LANGFUSE_PUBLIC_KEY
+          valueFrom:
+            secretKeyRef:
+              name: langfuse-secrets
+              key: public-key
+              optional: true
+        - name: LANGFUSE_SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: langfuse-secrets
+              key: secret-key
+              optional: true
         resources:
           requests:
             memory: "256Mi"
