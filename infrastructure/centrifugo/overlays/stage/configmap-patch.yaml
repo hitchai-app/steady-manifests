@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: centrifugo-config
+data:
+  config.json: |
+    {
+      "health": {
+        "enabled": true
+      },
+      "admin": {
+        "enabled": true
+      },
+      "client": {
+        "allowed_origins": ["https://app-stage.steady.ops.last-try.org"]
+      },
+      "log": {
+        "level": "info"
+      }
+    }
