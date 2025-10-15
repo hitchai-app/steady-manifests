@@ -51,6 +51,11 @@ spec:
             secretKeyRef:
               name: centrifugo-secrets
               key: api-key
+        - name: CENTRIFUGO_JWT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: centrifugo-secrets
+              key: admin-secret
         volumeMounts:
         - name: config
           mountPath: /centrifugo
