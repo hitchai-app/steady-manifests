@@ -1,13 +1,11 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
-namespace: steady-prod
+namespace: steady-stage
 
 resources:
-- ../../base
+- configmap.yaml
+- deployment.yaml
 - centrifugo-secrets-sealed.yaml
 - middleware.yaml
 - ingress.yaml
-
-patches:
-- path: configmap-patch.yaml
