@@ -24,7 +24,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           token: ${{ steps.app_token.outputs.token }}
-          ref: ${{ github.event.client_payload.environment == 'prod' && 'prod' || 'stage' }}
+          ref: master
 
       - name: Update image in deployment manifest
         run: |
