@@ -12,10 +12,7 @@ data:
         "enabled": true
       },
       "client": {
-        "allowed_origins": ["https://app-stage.steady.ops.last-try.org"],
-        "token": {
-          "hmac_secret_key": "${CENTRIFUGO_JWT_SECRET}"
-        }
+        "allowed_origins": ["https://app-stage.steady.ops.last-try.org"]
       },
       "log": {
         "level": "info"
