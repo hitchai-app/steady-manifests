@@ -14,6 +14,13 @@ data:
       "client": {
         "allowed_origins": ["https://app-stage.steady.ops.last-try.org"]
       },
+      "channel": {
+        "namespaces": [
+          {
+            "name": "conversation"
+          }
+        ]
+      },
       "log": {
         "level": "info"
       }

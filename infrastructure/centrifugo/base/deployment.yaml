@@ -56,12 +56,12 @@ spec:
             secretKeyRef:
               name: centrifugo-secrets
               key: admin-secret
-        - name: CENTRIFUGO_TOKEN_HMAC_SECRET_KEY
+        - name: CENTRIFUGO_CLIENT_TOKEN_HMAC_SECRET_KEY
           valueFrom:
             secretKeyRef:
               name: centrifugo-secrets
               key: admin-secret
-        - name: CENTRIFUGO_CHANNEL_TOKEN_HMAC_SECRET_KEY
+        - name: CENTRIFUGO_CLIENT_SUBSCRIPTION_TOKEN_HMAC_SECRET_KEY
           valueFrom:
             secretKeyRef:
               name: centrifugo-secrets
