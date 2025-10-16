@@ -13,7 +13,6 @@ data:
       },
       "client": {
         "allowed_origins": ["https://app-stage.steady.ops.last-try.org"],
-        "insecure": true,
         "token": {
           "hmac_secret_key": "${CENTRIFUGO_JWT_SECRET}"
         }
