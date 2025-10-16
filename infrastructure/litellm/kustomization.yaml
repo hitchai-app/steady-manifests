@@ -4,6 +4,8 @@ kind: Kustomization
 namespace: steady-stage
 
 resources:
-- ../../base
+- configmap.yaml
+- deployment.yaml
+- database.yaml
 - ai-api-keys-sealed.yaml
 - litellm-secrets-sealed.yaml
