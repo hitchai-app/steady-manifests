@@ -56,6 +56,16 @@ spec:
             secretKeyRef:
               name: centrifugo-secrets
               key: admin-secret
+        - name: CENTRIFUGO_TOKEN_HMAC_SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: centrifugo-secrets
+              key: admin-secret
+        - name: CENTRIFUGO_CHANNEL_TOKEN_HMAC_SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: centrifugo-secrets
+              key: admin-secret
         volumeMounts:
         - name: config
           mountPath: /centrifugo
