@@ -11,10 +11,10 @@ resources:
 - secrets/postgres-platform-user-sealed.yaml
 
 # Infrastructure
-- infrastructure/postgres/overlays/stage
-- infrastructure/valkey/overlays/stage
-- infrastructure/centrifugo/overlays/stage
-- infrastructure/litellm/overlays/stage
+- infrastructure/postgres
+- infrastructure/valkey
+- infrastructure/centrifugo
+- infrastructure/litellm
 
 # Applications
 - applications/dev-ui
