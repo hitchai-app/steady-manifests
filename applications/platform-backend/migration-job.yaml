@@ -15,7 +15,7 @@ spec:
       - name: ghcr-pull-secret
       containers:
       - name: migrate
-        image: ghcr.io/hitchai-app/platform-backend:stage-88a180a10c14613bdaf423db42dcb501547bf731
+        image: ghcr.io/hitchai-app/platform-backend:stage-3a11241d273369625f67c8da1e53925dfc3ac7c8
         command: ["node", "dist/db/migrate.cli.js"]
         env:
         - name: DATABASE_URL
