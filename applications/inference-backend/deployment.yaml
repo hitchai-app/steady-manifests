@@ -18,7 +18,7 @@ spec:
       - name: ghcr-pull-secret
       containers:
       - name: inference-backend
-        image: ghcr.io/hitchai-app/inference-backend:stage-0bb50c95f005ff954c5963b7d4aa8b928fe9dd7c
+        image: ghcr.io/hitchai-app/inference-backend:stage-1d554307dab32a2e2e7db7fa098c70b0861415fa
         ports:
         - containerPort: 3000
           name: http
