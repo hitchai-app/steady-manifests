@@ -4,7 +4,6 @@ metadata:
   name: miniapp
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-prod
-    traefik.ingress.kubernetes.io/router.middlewares: default-compress@kubernetescrd
 spec:
   ingressClassName: traefik
   tls:
