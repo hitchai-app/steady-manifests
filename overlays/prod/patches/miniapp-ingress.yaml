@@ -6,6 +6,7 @@ spec:
   tls:
     - hosts:
         - tg.steady.ops.last-try.org
+      secretName: miniapp-tls
   rules:
     - host: tg.steady.ops.last-try.org
       http:

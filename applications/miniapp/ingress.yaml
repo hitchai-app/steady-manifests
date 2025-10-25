@@ -9,10 +9,10 @@ spec:
   ingressClassName: traefik
   tls:
   - hosts:
-    - app-stage.steady.ops.last-try.org
+    - miniapp-stage.steady.ops.last-try.org
     secretName: miniapp-tls
   rules:
-  - host: app-stage.steady.ops.last-try.org
+  - host: miniapp-stage.steady.ops.last-try.org
     http:
       paths:
       - path: /
