@@ -6,6 +6,8 @@ Kubernetes manifests for the Steady product, managed by ArgoCD.
 
 - `inference-backend/` - AI inference service manifests
 - `platform-backend/` - Platform API service manifests
+- `miniapp/` - Telegram Mini App frontend manifests
+- `dev-ui/` - Development UI frontend manifests
 
 ## Branches
 

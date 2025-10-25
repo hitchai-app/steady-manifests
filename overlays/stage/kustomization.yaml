@@ -18,3 +18,4 @@ resources:
 - ../../applications/dev-ui
 - ../../applications/inference-backend
 - ../../applications/platform-backend
+- ../../applications/miniapp
