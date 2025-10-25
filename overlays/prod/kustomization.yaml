@@ -17,6 +17,8 @@ resources:
 - ../../applications/dev-ui
 - ../../applications/inference-backend
 - ../../applications/platform-backend
+- ../../applications/miniapp
 
 patchesStrategicMerge:
   - patches/dev-ui-ingress.yaml
+  - patches/miniapp-ingress.yaml
