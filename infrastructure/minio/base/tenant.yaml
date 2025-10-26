@@ -54,6 +54,3 @@ spec:
   buckets:
   - name: uploads
     objectLock: false
-
-  users:
-  - name: minio-user

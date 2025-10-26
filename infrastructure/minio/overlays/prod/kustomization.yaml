@@ -6,7 +6,6 @@ namespace: steady-prod
 resources:
 - ../../base
 - minio-env-configuration-sealed.yaml
-- minio-user-sealed.yaml
 - ingress.yaml
 
 patches:
