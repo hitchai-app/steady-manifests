@@ -1,0 +1,59 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: minio
+spec:
+  selector:
+    v1.min.io/tenant: minio
+  ports:
+  - name: http
+    port: 80
+    targetPort: 9000
+  - name: https
+    port: 443
+    targetPort: 9000
+---
+apiVersion: minio.min.io/v2
+kind: Tenant
+metadata:
+  name: minio
+spec:
+  configuration:
+    name: minio-env-configuration
+
+  pools:
+  - servers: 1
+    name: pool-0
+    volumesPerServer: 1
+    volumeClaimTemplate:
+      metadata:
+        name: data
+      spec:
+        accessModes:
+        - ReadWriteOnce
+        storageClassName: single-replica
+        resources:
+          requests:
+            storage: 10Gi
+
+    resources:
+      requests:
+        memory: 256Mi
+        cpu: 100m
+      limits:
+        memory: 512Mi
+        cpu: 500m
+
+  mountPath: /export
+
+  requestAutoCert: false
+
+  features:
+    bucketDNS: false
+
+  buckets:
+  - name: uploads
+    objectLock: false
+
+  users:
+  - name: minio-user

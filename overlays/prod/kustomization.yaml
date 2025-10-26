@@ -12,6 +12,7 @@ resources:
 - ../../infrastructure/valkey/overlays/prod
 - ../../infrastructure/centrifugo/overlays/prod
 - ../../infrastructure/litellm/overlays/prod
+- ../../infrastructure/minio/overlays/prod
 
 # Applications
 - ../../applications/dev-ui
