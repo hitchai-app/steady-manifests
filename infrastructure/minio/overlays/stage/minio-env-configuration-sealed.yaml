@@ -1,0 +1,16 @@
+---
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+metadata:
+  creationTimestamp: null
+  name: minio-env-configuration
+  namespace: steady-stage
+spec:
+  encryptedData:
+    config.env: AgBisYVNMYPH3yin92edNTjedPDnuDPchYo9/HMf9TuAPKghwswAg4Rd1JVfeX41jp1/hqGCUcGbUElikQ0wxcK9Ce3sUHQ+qewHLz0WYj1nzfZfGutT2Taf4dZZq635J3yZR9du5vDgOyuuyvwnt0qlmqH1VilQcRR+9AG/GHTwv5d3RgFpmxj75n8f9uV6DzuYyFqREqLNtX7TzsUNeTb/6zWMWamqWGb+aiwgj7hGTegGMd0cOUrjKfhvhk+UxTsP0zPtnI+k8QdxZ+odjN1qYm9EXL0iu8AjJI1+dEUxyU5R6yK02wkTP3FWgOuCKIXSFepYhHYTdzDSTgx5tKL4+72kmY+oPUlJbHD8vGf2ZU474edffbIIihrrLKE6sWMQCN629ToLfsSMw60TldEhJK52AjjAm7FjSPBcX0ebJmv2rLaBdi03jvTLYatexglv/KzQ60Udlsead7KsIcnqH2VUNrRtUieaay2G9S5lLpASqXeeF8GjHkNjM5mdYzVjX5X0OrO49gmhT493URqUYf1ERs79/Yq3/JnyDRwYjpgSp/xTV5EfKAWxbEXSMPXEl6RIOgMkfsF6LzAluJQp8LHOl1t69VQ+9tM1LATXjcoV5gHOv1NT/83MHLPcVTqMjDxdCzgT+9vnQVTV3jfdkpnd5QZoiQEWRP3xwMXyJc5k8j7J6isieFtlHIKpNB+nBBmSd7hDlTpGKI7kfuQFAiiF8OLTVul/fXnEX6mCSakld7wOAnTHo5z9WMMQD3y8pt0d8ZiKjnPFNHOJdxp+ypin4RXRpUJMWHq+PTe4mPJcMka2MGqcLZPz+5Qr1Rv9W+i3aUk6R7JfDB6vgpJHOrvlKsAy/vzgPozkKHdh9ec5L6FbYIrtxJ8+SGe15NKDT1tba85eVf8dSY6mrPWPkdyHrivMGygLNBO9dBPiuz8Pvh2RI9t/Z8LRwC7DaWOBqfqh+gIwXMXfoDp6dcY6XBIxzgjPOZ4lG4ZgqOasu9oXadV280KUzF1r+4eoCUC/Zp+f3S/zyItoTTt/8TV+wtBhrSBjArHpZxTgKuQgbw==
+  template:
+    metadata:
+      creationTimestamp: null
+      name: minio-env-configuration
+      namespace: steady-stage
+    type: Opaque
