@@ -6,4 +6,4 @@ resources:
 
 images:
   - name: ghcr.io/hitchai-app/inference-backend
-    newTag: stage-eaad70cb749ab016bcc2268012b542b737151ca2
+    newTag: stage-c6a050121db31632de944190dd1537621866c281
