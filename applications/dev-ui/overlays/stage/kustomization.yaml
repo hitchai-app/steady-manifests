@@ -1,0 +1,9 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - ../../base
+
+images:
+  - name: ghcr.io/hitchai-app/dev-ui
+    newTag: stage-90bb3a7057bc080def14dcda34390d5cabb5942f

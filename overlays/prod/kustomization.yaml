@@ -15,10 +15,10 @@ resources:
 - ../../infrastructure/minio/overlays/prod
 
 # Applications
-- ../../applications/dev-ui
-- ../../applications/inference-backend
-- ../../applications/platform-backend
-- ../../applications/miniapp
+- ../../applications/dev-ui/overlays/prod
+- ../../applications/inference-backend/overlays/prod
+- ../../applications/platform-backend/overlays/prod
+- ../../applications/miniapp/overlays/prod
 
 patchesStrategicMerge:
   - patches/dev-ui-ingress.yaml
