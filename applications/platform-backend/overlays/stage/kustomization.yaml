@@ -6,4 +6,4 @@ resources:
 
 images:
   - name: ghcr.io/hitchai-app/platform-backend
-    newTag: stage-580e742927de7a552b607709bd43fabc62adad27
+    newTag: stage-90aeb5998b71421a331b7b652bd5c86f66d96e68
