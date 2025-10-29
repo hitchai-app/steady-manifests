@@ -22,7 +22,7 @@ spec:
       - name: ghcr-pull-secret
       containers:
       - name: dev-ui
-        image: ghcr.io/hitchai-app/dev-ui:stage-90bb3a7057bc080def14dcda34390d5cabb5942f
+        image: ghcr.io/hitchai-app/dev-ui:latest
         ports:
         - containerPort: 3000
           name: http

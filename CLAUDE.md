@@ -90,13 +90,13 @@ The workflow:
 If you need to manually update an image (not recommended):
 
 ```bash
-# Update deployment image
-sed -i "s|image: ghcr.io/hitchai-app/platform-backend:.*|image: ghcr.io/hitchai-app/platform-backend:new-tag|" \
-  applications/platform-backend/deployment.yaml
+# Update stage image tag
+sed -i "s|newTag: .*|newTag: stage-new-tag|" \
+  applications/platform-backend/overlays/stage/kustomization.yaml
 
-# Update migration job if exists
-sed -i "s|image: ghcr.io/hitchai-app/platform-backend:.*|image: ghcr.io/hitchai-app/platform-backend:new-tag|" \
-  applications/platform-backend/migration-job.yaml
+# Update prod image tag
+sed -i "s|newTag: .*|newTag: prod-new-tag|" \
+  applications/platform-backend/overlays/prod/kustomization.yaml
 
 # Commit changes
 git add applications/platform-backend/

@@ -16,7 +16,7 @@ resources:
 - ../../infrastructure/minio/overlays/stage
 
 # Applications
-- ../../applications/dev-ui
-- ../../applications/inference-backend
-- ../../applications/platform-backend
-- ../../applications/miniapp
+- ../../applications/dev-ui/overlays/stage
+- ../../applications/inference-backend/overlays/stage
+- ../../applications/platform-backend/overlays/stage
+- ../../applications/miniapp/overlays/stage

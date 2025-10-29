@@ -20,7 +20,7 @@ spec:
       - name: ghcr-pull-secret
       containers:
       - name: miniapp
-        image: ghcr.io/hitchai-app/miniapp:stage-a106a8ddd8d6bde8cd70b1522bdf39eca8c5ea19
+        image: ghcr.io/hitchai-app/miniapp:latest
         ports:
         - containerPort: 80
           name: http
