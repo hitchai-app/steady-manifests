@@ -6,4 +6,4 @@ resources:
 
 images:
   - name: ghcr.io/hitchai-app/platform-backend
-    newTag: prod-563735a3d469a3940178d1858412e0b7f2e0fc79
+    newTag: prod-acaa4ca88732b24d25b117f58726cae4eca41495
