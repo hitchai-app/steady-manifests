@@ -5,6 +5,8 @@ metadata:
   creationTimestamp: null
   name: postgres-platform-user
   namespace: steady-stage
+  annotations:
+    argocd.argoproj.io/sync-wave: "-5"
 spec:
   encryptedData:
     password: AgC9rJoUdzCR7IIKFI5Z04/HRmaIN9Jly+aXrzv/yNQn+ueQKWqNyje7SmUsifgDaL6gJEkE87yB8ntrPiNOA0vo1DarCZRlBWCKQEuUdURLl5rzReD/TftFpCixENN29PSxXwPlWeDY8hksmwtqMwGQEIWvg3y+yiSygK1h+k06IhzGwVTJkDXNiQWLwJ06I59Q5C1t2/K9+fczirkCAcZenqCWWqqZSTMn0c3+Q8YbW6t6VGO+Spo5m3Uyo5dxhaOeQMKIlQfBany4tq/yabMjjn1tWE+8lMnVohjipsuHat0FaVUPPeUmdS50Ehdar+oAD/vEOKEncQ/7wKzpyCJIM4rhY/ZshkY8BAge8TXA4uIDAoM5cxSU+RgTylMVzgxCLTTfR0M6sYpeSGS/FaQbJIf0Dl2P0ZFUfLkyUpcRr1ntwSmAsjKxeyFVy3mJZcpUrPwT2QHr6kPdGlLnJDpKCI/gfxHCk3HiqeIE0PDwDhl14I5crBEl13ARJsJWL+TaaOLc7noDRwQXgNOGIkWSrpTleZA6TIZXdZfee4XSlc3vTqihQsn/cKdEDmgjmfT1HU68OMgeG4XrC4thM8gyHjHU+zPieItsLAStDbby3xWZxABh0ZA5d6ys9pGrkTI+bDocEKPLXL07j5URf1pNd2GKAHVvn4I9Y4dIlFlrGrlOp6aYC9evkQ6ohb/W0VufVFT9NRGZia3LzL+ZtAA1h8UY9uSQ7I5mJAbCxN+NCcqpCzTOCn0i7ie6
