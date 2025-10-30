@@ -13,8 +13,6 @@ resources:
 - ../../infrastructure/valkey/overlays/stage
 - ../../infrastructure/centrifugo/overlays/stage
 - ../../infrastructure/litellm/overlays/stage
-- ../../infrastructure/minio/overlays/stage
-
 # Applications
 - ../../applications/dev-ui/overlays/stage
 - ../../applications/inference-backend/overlays/stage
