@@ -6,4 +6,4 @@ resources:
 
 images:
   - name: ghcr.io/hitchai-app/inference-backend
-    newTag: prod-c1b040bb42dc5f71413448f8f14429ba84845c48
+    newTag: prod-8ca035abc08be2c3c8c027240ee30a4d9168f854
