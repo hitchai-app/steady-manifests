@@ -6,4 +6,4 @@ resources:
 
 images:
   - name: ghcr.io/hitchai-app/miniapp
-    newTag: prod-2f459b5eaeb30d657f5d625af028dbfec0430bcf
+    newTag: prod-f34b6e86888c39351c5a43767e002d5c2ecbaa6e
