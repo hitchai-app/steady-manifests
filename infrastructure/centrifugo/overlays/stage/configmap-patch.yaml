@@ -12,15 +12,8 @@ data:
         "enabled": true
       },
       "client": {
-        "allowed_origins": ["https://app-stage.steady.ops.last-try.org"],
+        "allowed_origins": ["https://app-stage.steady.ops.last-try.org", "https://miniapp-stage.steady.ops.last-try.org"],
         "insecure": true
-      },
-      "channel": {
-        "namespaces": [
-          {
-            "name": "conversation"
-          }
-        ]
       },
       "channel": {
         "namespaces": [

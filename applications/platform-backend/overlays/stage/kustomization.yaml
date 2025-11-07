@@ -4,6 +4,9 @@ kind: Kustomization
 resources:
   - ../../base
 
+patches:
+  - path: deployment-patch.yaml
+
 images:
   - name: ghcr.io/hitchai-app/platform-backend
     newTag: stage-041a19bae276932001a24fc1c08136927cdb390f
