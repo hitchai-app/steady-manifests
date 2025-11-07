@@ -175,7 +175,7 @@ All services should implement:
 
 4. **Resource Limits**: All containers must specify resource requests/limits for proper scheduling.
 
-5. **Namespace**: All resources deploy to `steady-prod` namespace (defined in root kustomization).
+5. **Namespace**: Resources deploy to environment-specific namespaces (`steady-stage` for stage, `steady-prod` for prod) defined in overlay kustomizations.
 
 ## Troubleshooting
 
