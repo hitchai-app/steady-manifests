@@ -6,6 +6,7 @@ namespace: steady-prod
 resources:
 # Secrets
 - ../../bases/secrets-common
+- secrets/telegram-bot-prod-sealed.yaml
 
 # Infrastructure
 - ../../infrastructure/postgres/overlays/prod

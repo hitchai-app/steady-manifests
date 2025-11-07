@@ -10,3 +10,8 @@ spec:
         env:
         - name: CORS_ORIGINS
           value: "https://app-stage.steady.ops.last-try.org,https://miniapp-stage.steady.ops.last-try.org"
+        - name: TELEGRAM_BOT_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: telegram-bot-stage
+              key: token
