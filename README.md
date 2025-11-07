@@ -11,15 +11,14 @@ Kubernetes manifests for the Steady product, managed by ArgoCD.
 
 ## Branches
 
-- `stage` - Stage environment (auto-deployed from service `dev` branches)
-- `prod` - Production environment (auto-deployed from service `master` branches)
+- `master` - Single branch with environment-specific overlays (`overlays/stage/` and `overlays/prod/`)
 
 ## Workflow
 
 Service CI updates manifests automatically:
-- Service push to `dev` → CI updates `stage` branch
-- Service push to `master` → CI updates `prod` branch
-- ArgoCD syncs changes to cluster
+- Service push to `dev` → CI updates stage overlay image tags on `master`
+- Service push to `master` → CI updates prod overlay image tags on `master`
+- ArgoCD syncs changes from `master` to appropriate cluster
 
 ## Security
 

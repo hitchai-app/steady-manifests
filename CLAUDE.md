@@ -10,8 +10,8 @@ This is a Kubernetes manifest repository for the Steady product, managed by Argo
 
 ### Branch Strategy
 
-- `stage` - Stage environment (auto-deployed from service `dev` branches)
-- `prod` - Production environment (auto-deployed from service `master` branches)
+- `master` - Single branch managing both stage and prod environments via Kustomize overlays
+- Service CI updates image tags in environment-specific overlays (`overlays/stage/` and `overlays/prod/`)
 
 ### Repository Structure
 
@@ -80,10 +80,10 @@ curl -X POST \
 ```
 
 The workflow:
-1. Checks out the target branch (stage/prod)
-2. Updates `image:` in `deployment.yaml` and `migration-job.yaml`
-3. Commits and pushes changes
-4. ArgoCD detects commit and syncs to cluster
+1. Checks out the master branch
+2. Updates `image:` tags in environment-specific overlay kustomizations
+3. Commits and pushes changes to master
+4. ArgoCD detects commit and syncs to appropriate cluster
 
 ### Manual Image Updates
 
