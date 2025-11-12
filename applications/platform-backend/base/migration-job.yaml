@@ -8,6 +8,10 @@ metadata:
 spec:
   backoffLimit: 3
   template:
+    metadata:
+      labels:
+        app: platform-backend-migration
+        job-name: platform-backend-migration
     spec:
       restartPolicy: Never
       imagePullSecrets:
