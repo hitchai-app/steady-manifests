@@ -1,0 +1,17 @@
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: centrifugo
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`ws-stage.steady.ops.last-try.org`)
+      kind: Rule
+      services:
+        - name: centrifugo
+          port: 8000
+  tls:
+    secretName: centrifugo-tls
