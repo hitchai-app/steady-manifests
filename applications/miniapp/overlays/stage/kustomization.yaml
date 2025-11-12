@@ -6,4 +6,4 @@ resources:
 
 images:
   - name: ghcr.io/hitchai-app/miniapp
-    newTag: stage-bdfe1db5edddbfe6130c71afed3b8fc41c335bff
+    newTag: stage-59c1b11f7030f1dd85ea554a1f603dc3b932194b
