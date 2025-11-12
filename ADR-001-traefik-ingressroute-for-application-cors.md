@@ -158,11 +158,11 @@ We will **switch from standard Kubernetes Ingress to Traefik IngressRoute CRD** 
 
 ## Implementation
 
-### Phase 1: Platform-Backend and Centrifugo (All Environments)
+### Phase 1: Platform-Backend (All Environments)
 
 **Create Environment-Specific IngressRoute Files:**
 
-Following the repository pattern (similar to existing centrifugo ingress), IngressRoute files are created in overlays rather than base to support environment-specific hostnames.
+Following the repository pattern, IngressRoute files are created in overlays rather than base to support environment-specific hostnames.
 
 ```yaml
 # applications/platform-backend/overlays/stage/ingressroute.yaml
@@ -204,14 +204,6 @@ spec:
           port: 3000
   tls:
     secretName: platform-backend-tls
-```
-
-**Centrifugo IngressRoute (Same Pattern):**
-
-```yaml
-# infrastructure/centrifugo/overlays/stage/ingressroute.yaml
-# infrastructure/centrifugo/overlays/prod/ingressroute.yaml
-# (WebSocket endpoints ws-stage/ws production hostnames)
 ```
 
 **Update Overlay Kustomizations:**

@@ -8,7 +8,6 @@ resources:
   - centrifugo-secrets-sealed.yaml
   - middleware.yaml
   - ingress.yaml
-  - ingressroute.yaml
 
 patches:
   - path: configmap-patch.yaml
