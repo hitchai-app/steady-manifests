@@ -1,17 +1,20 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: platform-backend-migration
+  generateName: platform-backend-migration-
   annotations:
+    # Run before the Deployment (which is wave "2")
     argocd.argoproj.io/sync-wave: "1"
-    argocd.argoproj.io/sync-options: Replace=true
+    # Treat this as an ephemeral hook so ArgoCD creates a fresh Job each sync
+    argocd.argoproj.io/hook: PreSync
+    argocd.argoproj.io/hook-delete-policy: BeforeHookCreation,HookSucceeded
 spec:
   backoffLimit: 3
+  ttlSecondsAfterFinished: 600
   template:
     metadata:
       labels:
         app: platform-backend-migration
-        job-name: platform-backend-migration
     spec:
       restartPolicy: Never
       imagePullSecrets:
