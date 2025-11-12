@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  generateName: platform-backend-migration-
+  name: platform-backend-migration
   annotations:
     # Run before the Deployment (which is wave "2")
     argocd.argoproj.io/sync-wave: "1"
@@ -9,7 +9,8 @@ metadata:
     argocd.argoproj.io/hook: PreSync
     argocd.argoproj.io/hook-delete-policy: BeforeHookCreation,HookSucceeded
 spec:
-  backoffLimit: 3
+  backoffLimit: 1
+  activeDeadlineSeconds: 600
   ttlSecondsAfterFinished: 600
   template:
     metadata:
@@ -22,6 +23,7 @@ spec:
       containers:
       - name: migrate
         image: ghcr.io/hitchai-app/platform-backend:latest
+        imagePullPolicy: IfNotPresent
         command: ["node", "dist/db/migrate.cli.js"]
         env:
         - name: DATABASE_URL
