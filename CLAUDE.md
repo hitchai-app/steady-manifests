@@ -177,6 +177,61 @@ All services should implement:
 
 5. **Namespace**: Resources deploy to environment-specific namespaces (`steady-stage` for stage, `steady-prod` for prod) defined in overlay kustomizations.
 
+## Git Workflow Guidelines
+
+**CRITICAL: This repository uses single-branch GitOps with automatic CI updates. Exercise extreme caution with git operations.**
+
+### Before Any Git Operation
+
+1. **ALWAYS check current branch**: `git branch` or `git status`
+2. **ALWAYS verify what will be committed**: `git diff --staged` before `git commit`
+3. **ALWAYS check branch base**: Ensure you're branching from latest `master`
+4. **NEVER force push** to `master` branch
+5. **ALWAYS pull latest master** before creating feature branches
+
+### Branch Strategy
+
+- `master` - Single source of truth for both stage and prod environments
+  - Stage environment: Uses `overlays/stage/` Kustomize overlays
+  - Prod environment: Uses `overlays/prod/` Kustomize overlays
+  - CI automatically updates image tags in environment-specific overlays
+- Feature branches - For manual changes (infrastructure, configuration, secrets)
+
+### Creating Feature Branches
+
+```bash
+# ALWAYS start from latest master
+git checkout master
+git pull origin master
+git checkout -b feature/description
+
+# Verify you're on the correct branch before making changes
+git branch --show-current
+```
+
+### Before Committing
+
+1. **Check what's staged**: `git status` and `git diff --staged`
+2. **Verify changes are intentional**: Review each file modification
+3. **Avoid CI-generated content**: Don't commit image tag changes in overlays
+4. **Follow Conventional Commits**: Use proper commit message format
+
+### Before Pushing
+
+1. **Pull latest master**: `git checkout master && git pull && git checkout -`
+2. **Rebase if needed**: `git rebase master` to avoid merge commits
+3. **Review full diff**: `git diff origin/master..HEAD`
+4. **Verify branch**: `git branch --show-current` should be your feature branch, not master
+
+### Common Mistakes to Avoid
+
+- ❌ Creating branches from outdated master
+- ❌ Committing CI-generated changes (image tags in overlays) - these will be overwritten
+- ❌ Force pushing to master branch
+- ❌ Forgetting to pull latest before creating branches
+- ❌ Accidentally committing on master instead of feature branch
+- ❌ Mixing unrelated changes in one PR (infrastructure + application changes)
+
 ## Troubleshooting
 
 ### Image Pull Issues
