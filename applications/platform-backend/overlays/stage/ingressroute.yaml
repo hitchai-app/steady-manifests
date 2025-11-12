@@ -4,6 +4,7 @@ metadata:
   name: platform-backend
   annotations:
     argocd.argoproj.io/sync-wave: "2"
+    cert-manager.io/cluster-issuer: letsencrypt-prod
 spec:
   entryPoints:
     - websecure
