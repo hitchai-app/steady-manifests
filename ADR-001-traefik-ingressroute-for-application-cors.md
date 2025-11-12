@@ -164,7 +164,7 @@ We will **switch from standard Kubernetes Ingress to Traefik IngressRoute CRD** 
 
 ```yaml
 # applications/platform-backend/base/ingressroute.yaml
-apiVersion: traefik.containo.us/v1alpha1
+apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
   name: platform-backend
