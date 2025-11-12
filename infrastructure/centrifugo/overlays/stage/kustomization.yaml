@@ -6,7 +6,6 @@ namespace: steady-stage
 resources:
 - ../../base
 - centrifugo-secrets-sealed.yaml
-- middleware.yaml
 - ingress.yaml
 
 patches:
