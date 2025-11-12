@@ -158,12 +158,14 @@ We will **switch from standard Kubernetes Ingress to Traefik IngressRoute CRD** 
 
 ## Implementation
 
-### Phase 1: Platform-Backend (Stage Environment)
+### Phase 1: Platform-Backend and Centrifugo (All Environments)
 
-**Create IngressRoute:**
+**Create Environment-Specific IngressRoute Files:**
+
+Following the repository pattern (similar to existing centrifugo ingress), IngressRoute files are created in overlays rather than base to support environment-specific hostnames.
 
 ```yaml
-# applications/platform-backend/base/ingressroute.yaml
+# applications/platform-backend/overlays/stage/ingressroute.yaml
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
@@ -183,16 +185,42 @@ spec:
     secretName: platform-backend-tls
 ```
 
-**Update Kustomization:**
+```yaml
+# applications/platform-backend/overlays/prod/ingressroute.yaml
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: platform-backend
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`api.steady.ops.last-try.org`)
+      kind: Rule
+      services:
+        - name: platform-backend
+          port: 3000
+  tls:
+    secretName: platform-backend-tls
+```
+
+**Centrifugo IngressRoute (Same Pattern):**
 
 ```yaml
-# applications/platform-backend/base/kustomization.yaml
+# infrastructure/centrifugo/overlays/stage/ingressroute.yaml
+# infrastructure/centrifugo/overlays/prod/ingressroute.yaml
+# (WebSocket endpoints ws-stage/ws production hostnames)
+```
+
+**Update Overlay Kustomizations:**
+
+```yaml
+# applications/platform-backend/overlays/*/kustomization.yaml
 resources:
-  - deployment.yaml
-  - service.yaml
-  - database.yaml
-  - migration-job.yaml
-  - ingressroute.yaml # Changed from ingress.yaml
+  - ../../base
+  - ingressroute.yaml # Add IngressRoute to overlays
 ```
 
 **No Application Changes Required:**
