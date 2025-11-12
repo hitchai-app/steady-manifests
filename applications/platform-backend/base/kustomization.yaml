@@ -5,5 +5,7 @@ resources:
 - database.yaml
 - deployment.yaml
 - service.yaml
-- migration-job.yaml
+# Temporarily commented to allow ArgoCD sync (Job immutability issue)
+# Re-enable after deployment syncs successfully
+# - migration-job.yaml
 - ingress.yaml
