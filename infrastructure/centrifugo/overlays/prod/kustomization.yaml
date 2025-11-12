@@ -4,10 +4,10 @@ kind: Kustomization
 namespace: steady-prod
 
 resources:
-  - ../../base
-  - centrifugo-secrets-sealed.yaml
-  - middleware.yaml
-  - ingress.yaml
+- ../../base
+- centrifugo-secrets-sealed.yaml
+- middleware.yaml
+- ingress.yaml
 
 patches:
-  - path: configmap-patch.yaml
+- path: configmap-patch.yaml
