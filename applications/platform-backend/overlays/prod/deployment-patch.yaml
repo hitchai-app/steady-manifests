@@ -8,6 +8,8 @@ spec:
       containers:
         - name: platform-backend
           env:
+            - name: CORS_ORIGINS
+              value: "https://app.steady.ops.last-try.org,https://miniapp.steady.ops.last-try.org"
             - name: TELEGRAM_BOT_TOKEN
               valueFrom:
                 secretKeyRef:
