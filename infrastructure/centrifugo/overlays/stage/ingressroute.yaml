@@ -1,7 +1,7 @@
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
-  name: platform-backend
+  name: centrifugo
   annotations:
     argocd.argoproj.io/sync-wave: "2"
     cert-manager.io/cluster-issuer: letsencrypt-prod
@@ -9,13 +9,13 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`api-stage.steady.ops.last-try.org`)
+    - match: Host(`ws-stage.steady.ops.last-try.org`)
       kind: Rule
       middlewares:
         - name: cors-headers
           namespace: steady-stage
       services:
-        - name: platform-backend
-          port: 3000
+        - name: centrifugo
+          port: 8000
   tls:
-    secretName: platform-backend-tls
+    secretName: centrifugo-tls

@@ -4,9 +4,9 @@ kind: Kustomization
 namespace: steady-stage
 
 resources:
-- ../../base
-- centrifugo-secrets-sealed.yaml
-- ingress.yaml
+  - ../../base
+  - centrifugo-secrets-sealed.yaml
+  - ingressroute.yaml
 
 patches:
-- path: configmap-patch.yaml
+  - path: configmap-patch.yaml

@@ -6,14 +6,12 @@ spec:
   template:
     spec:
       containers:
-      - name: platform-backend
-        env:
-        - name: ALLOW_DEV_AUTH
-          value: "true"
-        - name: CORS_ORIGINS
-          value: "https://app-stage.steady.ops.last-try.org,https://miniapp-stage.steady.ops.last-try.org"
-        - name: TELEGRAM_BOT_TOKEN
-          valueFrom:
-            secretKeyRef:
-              name: telegram-bot-stage
-              key: token
+        - name: platform-backend
+          env:
+            - name: ALLOW_DEV_AUTH
+              value: "true"
+            - name: TELEGRAM_BOT_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: telegram-bot-stage
+                  key: token
