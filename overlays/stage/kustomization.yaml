@@ -4,18 +4,19 @@ kind: Kustomization
 namespace: steady-stage
 
 resources:
-# Secrets
-- ../../bases/secrets-common
-- secrets/google-oauth-stage-sealed.yaml
-- secrets/telegram-bot-stage-sealed.yaml
+  # Secrets
+  - ../../bases/secrets-common
+  - secrets/google-oauth-stage-sealed.yaml
+  - secrets/telegram-bot-stage-sealed.yaml
 
-# Infrastructure
-- ../../infrastructure/postgres/overlays/stage
-- ../../infrastructure/valkey/overlays/stage
-- ../../infrastructure/centrifugo/overlays/stage
-- ../../infrastructure/litellm/overlays/stage
-# Applications
-- ../../applications/dev-ui/overlays/stage
-- ../../applications/inference-backend/overlays/stage
-- ../../applications/platform-backend/overlays/stage
-- ../../applications/miniapp/overlays/stage
+  # Infrastructure
+  - ../../infrastructure/postgres/overlays/stage
+  - ../../infrastructure/valkey/overlays/stage
+  - ../../infrastructure/centrifugo/overlays/stage
+  - ../../infrastructure/litellm/overlays/stage
+  - ../../infrastructure/traefik-middleware/overlays/stage
+  # Applications
+  - ../../applications/dev-ui/overlays/stage
+  - ../../applications/inference-backend/overlays/stage
+  - ../../applications/platform-backend/overlays/stage
+  - ../../applications/miniapp/overlays/stage

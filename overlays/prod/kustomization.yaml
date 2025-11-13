@@ -4,20 +4,21 @@ kind: Kustomization
 namespace: steady-prod
 
 resources:
-# Secrets
-- ../../bases/secrets-common
-- secrets/telegram-bot-prod-sealed.yaml
+  # Secrets
+  - ../../bases/secrets-common
+  - secrets/telegram-bot-prod-sealed.yaml
 
-# Infrastructure
-- ../../infrastructure/postgres/overlays/prod
-- ../../infrastructure/valkey/overlays/prod
-- ../../infrastructure/centrifugo/overlays/prod
-- ../../infrastructure/litellm/overlays/prod
-# Applications
-- ../../applications/dev-ui/overlays/prod
-- ../../applications/inference-backend/overlays/prod
-- ../../applications/platform-backend/overlays/prod
-- ../../applications/miniapp/overlays/prod
+  # Infrastructure
+  - ../../infrastructure/postgres/overlays/prod
+  - ../../infrastructure/valkey/overlays/prod
+  - ../../infrastructure/centrifugo/overlays/prod
+  - ../../infrastructure/litellm/overlays/prod
+  - ../../infrastructure/traefik-middleware/overlays/prod
+  # Applications
+  - ../../applications/dev-ui/overlays/prod
+  - ../../applications/inference-backend/overlays/prod
+  - ../../applications/platform-backend/overlays/prod
+  - ../../applications/miniapp/overlays/prod
 
 patchesStrategicMerge:
   - patches/dev-ui-ingress.yaml
