@@ -130,14 +130,16 @@ PR #160 in platform-backend:
 
 PR #40 in steady-manifests:
 
-- Remove `cors-headers` middleware reference from IngressRoutes
-- Add `CORS_ORIGINS` environment variable to deployment patches
-- Clean up unused Traefik middleware resources
+- Remove `cors-headers` middleware reference from platform-backend IngressRoutes
+- Add `CORS_ORIGINS` environment variable to platform-backend deployment patches
+- **Keep middleware files for Centrifugo's continued use**
 
-Environment-specific origins:
+Environment-specific origins for platform-backend:
 
 - Stage: `https://app-stage.steady.ops.last-try.org,https://miniapp-stage.steady.ops.last-try.org`
 - Prod: `https://app.steady.ops.last-try.org,https://miniapp.steady.ops.last-try.org`
+
+**Note on Centrifugo**: Centrifugo (WebSocket server at `ws-stage.steady.ops.last-try.org` and `ws.steady.ops.last-try.org`) continues using Traefik CORS middleware. WebSocket connections have different CORS semantics than HTTP. This configuration will be evaluated separately in a future ADR.
 
 ## Testing
 
