@@ -99,214 +99,38 @@ We will **configure CORS at the Traefik ingress layer using Headers Middleware**
 - Easier to see security policies in one place (manifest repo)
 - Standard practice in production Kubernetes
 
-## Implementation
+## Implementation Summary
 
-### Phase 1: Create Traefik CORS Middleware
+### Key Components
 
-**Stage Environment:**
+1. **Traefik CORS Middleware**: Created in `infrastructure/traefik-middleware/overlays/{stage,prod}/cors-middleware.yaml`
+   - Defines allowed origins (environment-specific)
+   - Configures methods, headers, credentials, cache time
+   - Uses Traefik Headers Middleware CRD
 
-```yaml
-# infrastructure/traefik-middleware/overlays/stage/cors-middleware.yaml
-apiVersion: traefik.io/v1alpha1
-kind: Middleware
-metadata:
-  name: cors-headers
-  namespace: steady-stage
-spec:
-  headers:
-    accessControlAllowOriginList:
-      - "https://app-stage.steady.ops.last-try.org"
-      - "https://miniapp-stage.steady.ops.last-try.org"
-    accessControlAllowMethods:
-      - "GET"
-      - "POST"
-      - "PUT"
-      - "DELETE"
-      - "PATCH"
-      - "OPTIONS"
-    accessControlAllowHeaders:
-      - "Content-Type"
-      - "Authorization"
-      - "X-Requested-With"
-      - "X-CSRF-Token"
-    accessControlAllowCredentials: true
-    accessControlMaxAge: 86400
-```
+2. **IngressRoute Updates**: Modified in `applications/platform-backend/overlays/{stage,prod}/ingressroute.yaml`
+   - Added middleware reference to routes
+   - CORS headers applied at ingress layer
 
-**Production Environment:**
+3. **Application Changes**: Remove from `platform-backend` repository
+   - Remove `@fastify/cors` plugin registration
+   - Remove CORS configuration from config files
+   - Remove `CORS_ORIGINS` environment variable
+   - Uninstall `@fastify/cors` package
 
-```yaml
-# infrastructure/traefik-middleware/overlays/prod/cors-middleware.yaml
-apiVersion: traefik.io/v1alpha1
-kind: Middleware
-metadata:
-  name: cors-headers
-  namespace: steady-prod
-spec:
-  headers:
-    accessControlAllowOriginList:
-      - "https://app.steady.ops.last-try.org"
-      - "https://miniapp.steady.ops.last-try.org"
-    accessControlAllowMethods:
-      - "GET"
-      - "POST"
-      - "PUT"
-      - "DELETE"
-      - "PATCH"
-      - "OPTIONS"
-    accessControlAllowHeaders:
-      - "Content-Type"
-      - "Authorization"
-      - "X-Requested-With"
-      - "X-CSRF-Token"
-    accessControlAllowCredentials: true
-    accessControlMaxAge: 86400
-```
+### Testing Strategy
 
-### Phase 2: Update IngressRoute to Use Middleware
+Verify CORS functionality:
 
-**Stage:**
-
-```yaml
-# applications/platform-backend/overlays/stage/ingressroute.yaml
-apiVersion: traefik.io/v1alpha1
-kind: IngressRoute
-metadata:
-  name: platform-backend
-  annotations:
-    argocd.argoproj.io/sync-wave: "2"
-    cert-manager.io/cluster-issuer: letsencrypt-prod
-spec:
-  entryPoints:
-    - websecure
-  routes:
-    - match: Host(`api-stage.steady.ops.last-try.org`)
-      kind: Rule
-      middlewares:
-        - name: cors-headers
-          namespace: steady-stage
-      services:
-        - name: platform-backend
-          port: 3000
-  tls:
-    secretName: platform-backend-tls
-```
-
-**Production:**
-
-```yaml
-# applications/platform-backend/overlays/prod/ingressroute.yaml
-apiVersion: traefik.io/v1alpha1
-kind: IngressRoute
-metadata:
-  name: platform-backend
-  annotations:
-    argocd.argoproj.io/sync-wave: "2"
-    cert-manager.io/cluster-issuer: letsencrypt-prod
-spec:
-  entryPoints:
-    - websecure
-  routes:
-    - match: Host(`api.steady.ops.last-try.org`)
-      kind: Rule
-      middlewares:
-        - name: cors-headers
-          namespace: steady-prod
-      services:
-        - name: platform-backend
-          port: 3000
-  tls:
-    secretName: platform-backend-tls
-```
-
-### Phase 3: Remove CORS from Platform-Backend Application
-
-**Changes to `platform-backend` repository:**
-
-1. Remove `@fastify/cors` plugin registration:
-
-```typescript
-// src/app.ts - REMOVE:
-// await app.register(cors, {
-//   origin: config.cors.origins,
-//   credentials: true,
-// });
-```
-
-2. Remove CORS configuration:
-
-```typescript
-// src/config.ts - REMOVE:
-// cors: {
-//   origins: z.string().transform(s => s.split(',')),
-// }
-```
-
-3. Remove environment variable from deployment:
-
-```yaml
-# steady-manifests: applications/platform-backend/base/deployment.yaml
-# REMOVE:
-# - name: CORS_ORIGINS
-#   value: "..."
-```
-
-4. Uninstall package:
-
-```bash
-npm uninstall @fastify/cors
-```
-
-### Phase 4: Testing
-
-**Test Plan:**
-
-```bash
-# 1. CORS headers present for allowed origin
-curl -i https://api-stage.steady.ops.last-try.org/health \
-  -H "Origin: https://app-stage.steady.ops.last-try.org"
-# Expected: access-control-allow-origin: https://app-stage.steady.ops.last-try.org
-
-# 2. OPTIONS preflight works
-curl -i -X OPTIONS https://api-stage.steady.ops.last-try.org/health \
-  -H "Origin: https://app-stage.steady.ops.last-try.org" \
-  -H "Access-Control-Request-Method: GET"
-# Expected: 200 OK with CORS headers
-
-# 3. Credentials support
-curl -i https://api-stage.steady.ops.last-try.org/health \
-  -H "Origin: https://app-stage.steady.ops.last-try.org" \
-  -H "Cookie: session=test"
-# Expected: access-control-allow-credentials: true
-
-# 4. Unauthorized origin rejected
-curl -i https://api-stage.steady.ops.last-try.org/health \
-  -H "Origin: https://evil.com"
-# Expected: No access-control-allow-origin header
-
-# 5. Verify no duplicate headers
-curl -i https://api-stage.steady.ops.last-try.org/health \
-  -H "Origin: https://app-stage.steady.ops.last-try.org" | \
-  grep -i "access-control-allow-origin"
-# Expected: Only ONE header line (not duplicated)
-```
-
-### Phase 5: Rollout
-
-1. Deploy manifest changes to stage (Traefik middleware + IngressRoute update)
-2. Verify CORS works correctly in stage
-3. Deploy platform-backend code changes to stage (remove @fastify/cors)
-4. Verify CORS still works after app deployment
-5. Monitor for 24 hours
-6. Roll out to production
+- Allowed origins receive proper CORS headers
+- OPTIONS preflight requests work
+- Credentials (cookies) are supported
+- Unauthorized origins are rejected
+- No duplicate headers appear
 
 ### Rollback Plan
 
-If issues arise:
-
-1. Revert IngressRoute middleware reference
-2. Re-enable @fastify/cors in platform-backend (redeploy app)
-3. Investigate specific failure mode
+If issues arise, revert IngressRoute middleware reference and redeploy application with `@fastify/cors` re-enabled
 
 ## Alternatives Considered
 
@@ -339,33 +163,12 @@ If issues arise:
 
 ### CORS Security Best Practices
 
-1. **Never use wildcards with credentials:**
+1. **Never use wildcards with credentials** - Explicit origin lists only
+2. **HTTPS-only origins** - No HTTP in production
+3. **Appropriate cache times** - 24 hours balances performance and security
+4. **Minimal allowed headers** - Only include headers actually used
 
-   ```yaml
-   # ❌ INSECURE - Allows any origin
-   accessControlAllowOriginList:
-     - "*"
-
-   # ✅ SECURE - Explicit origin list
-   accessControlAllowOriginList:
-     - "https://app-stage.steady.ops.last-try.org"
-     - "https://miniapp-stage.steady.ops.last-try.org"
-   ```
-
-2. **Explicit origin validation:**
-   - No regex wildcards in production
-   - HTTPS-only origins enforced
-   - Comma-separated list for multiple origins
-
-3. **Appropriate cache times:**
-   - `accessControlMaxAge: 86400` (24 hours)
-   - Balances performance with security
-
-4. **Minimal allowed headers:**
-   - Only include headers actually used by frontend
-   - Reduces attack surface
-
-**Reference:** [OWASP CORS Security](https://owasp.org/www-community/attacks/CORS_OriginHeaderScrutiny)
+See [OWASP CORS Security](https://owasp.org/www-community/attacks/CORS_OriginHeaderScrutiny) for detailed guidance
 
 ## References
 
