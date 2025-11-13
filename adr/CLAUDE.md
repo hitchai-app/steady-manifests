@@ -2,7 +2,19 @@
 
 ## Purpose
 
-ADRs document **why** architectural decisions were made, not **how** they are implemented. They capture the context, reasoning, and trade-offs for future reference.
+ADRs are **decision statements**, not tasks or instructions.
+
+They document:
+
+- **What decision was made** (the architectural choice)
+- **Why it was made** (context, forces, rationale)
+- **What the trade-offs are** (consequences)
+
+They do NOT document:
+
+- How to implement the decision
+- Step-by-step instructions
+- Code examples or configurations
 
 ## What Belongs in an ADR
 
@@ -119,11 +131,12 @@ kubectl port-forward ...
 
 ## Key Principles
 
-1. **ADRs are about decisions, not instructions**
-2. **Focus on the "why", not the "how"**
+1. **ADRs are decision statements** - "We decided X" not "Do X"
+2. **Focus on reasoning** - Why this choice over alternatives
 3. **Keep it concise** - Target 200-400 words for core content
-4. **Reference, don't duplicate** - Link to implementation files instead of copying them
+4. **Reference, don't duplicate** - Link to implementation, don't describe it
 5. **Architecture-level** - Decisions that affect multiple components or long-term structure
+6. **Immutable record** - Capture the decision at the time it was made
 
 ## When NOT to Write an ADR
 
@@ -141,10 +154,26 @@ If an ADR contains too much implementation detail:
 3. **Reference** file paths instead of copying content
 4. **Focus** on the architectural reasoning
 
+## Critical Distinction
+
+**ADRs are NOT:**
+
+- ❌ Instructions or task lists
+- ❌ Implementation guides
+- ❌ Tutorials or how-tos
+- ❌ Step-by-step procedures
+
+**ADRs ARE:**
+
+- ✅ Decision statements ("We decided to use X")
+- ✅ Rationale explanations ("Because of Y and Z")
+- ✅ Trade-off documentation ("This gives us A but costs us B")
+- ✅ Historical records ("At the time, we chose X over Y")
+
 ## Related Documentation
 
 - **Concepts**: High-level domain models and principles
 - **ADRs**: Architectural decisions and rationale (this directory)
 - **Tasks**: Step-by-step implementation guides with code examples
 
-ADRs bridge concepts and tasks - they explain **why we chose this approach** without detailing **how to implement it step-by-step**.
+ADRs answer "What did we decide and why?" not "How do we implement it?"
