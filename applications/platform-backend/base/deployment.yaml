@@ -17,62 +17,60 @@ spec:
         app: platform-backend
     spec:
       imagePullSecrets:
-      - name: ghcr-pull-secret
+        - name: ghcr-pull-secret
       containers:
-      - name: platform-backend
-        image: ghcr.io/hitchai-app/platform-backend:latest
-        ports:
-        - containerPort: 3000
-          name: http
-        env:
-        - name: NODE_ENV
-          value: "production"
-        - name: DATABASE_URL
-          valueFrom:
-            secretKeyRef:
-              name: postgres-platform-user
-              key: uri
-        - name: REDIS_HOST
-          value: "valkey"
-        - name: REDIS_PORT
-          value: "6379"
-        - name: CENTRIFUGO_URL
-          value: "http://centrifugo:8000"
-        - name: CENTRIFUGO_API_KEY
-          valueFrom:
-            secretKeyRef:
-              name: centrifugo-secrets
-              key: api-key
-        - name: CENTRIFUGO_JWT_SECRET
-          valueFrom:
-            secretKeyRef:
-              name: centrifugo-secrets
-              key: admin-secret
-        - name: CORS_ORIGINS
-          value: "https://app-stage.steady.ops.last-try.org"
-        - name: GOOGLE_CLIENT_ID
-          value: "270059083875-chto0ipct3979pqrn4ohnmsjnskgavl6.apps.googleusercontent.com"
-        - name: GOOGLE_CLIENT_SECRET
-          valueFrom:
-            secretKeyRef:
-              name: google-oauth-stage
-              key: client-secret
-        resources:
-          requests:
-            memory: "256Mi"
-            cpu: "100m"
-          limits:
-            memory: "512Mi"
-            cpu: "500m"
-        livenessProbe:
-          httpGet:
-            path: /health
-            port: 3000
-          initialDelaySeconds: 30
-          periodSeconds: 10
-        readinessProbe:
-          httpGet:
-            path: /ready
-            port: 3000
-          initialDelaySeconds: 5
-          periodSeconds: 5
+        - name: platform-backend
+          image: ghcr.io/hitchai-app/platform-backend:latest
+          ports:
+            - containerPort: 3000
+              name: http
+          env:
+            - name: NODE_ENV
+              value: "production"
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-platform-user
+                  key: uri
+            - name: REDIS_HOST
+              value: "valkey"
+            - name: REDIS_PORT
+              value: "6379"
+            - name: CENTRIFUGO_URL
+              value: "http://centrifugo:8000"
+            - name: CENTRIFUGO_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: centrifugo-secrets
+                  key: api-key
+            - name: CENTRIFUGO_JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: centrifugo-secrets
+                  key: admin-secret
+            - name: GOOGLE_CLIENT_ID
+              value: "270059083875-chto0ipct3979pqrn4ohnmsjnskgavl6.apps.googleusercontent.com"
+            - name: GOOGLE_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: google-oauth-stage
+                  key: client-secret
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "100m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 3000
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: 3000
+            initialDelaySeconds: 5
+            periodSeconds: 5

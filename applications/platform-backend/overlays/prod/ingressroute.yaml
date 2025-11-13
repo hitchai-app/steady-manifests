@@ -11,6 +11,9 @@ spec:
   routes:
     - match: Host(`api.steady.ops.last-try.org`)
       kind: Rule
+      middlewares:
+        - name: cors-headers
+          namespace: steady-prod
       services:
         - name: platform-backend
           port: 3000
