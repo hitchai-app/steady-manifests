@@ -33,6 +33,7 @@ secrets/               # SealedSecrets (encrypted credentials)
 ### Kustomize Structure
 
 All infrastructure components follow a base/overlays pattern:
+
 - `base/` - Common configuration
 - `overlays/prod/` - Production-specific configuration
 - `overlays/stage/` - Stage-specific configuration
@@ -42,25 +43,32 @@ Root `kustomization.yaml` assembles all components for the environment.
 ## Key Technologies
 
 ### CloudNativePG (CNPG)
+
 PostgreSQL is managed by the CloudNativePG operator:
+
 - **Cluster**: `postgres` (single instance in prod)
 - **Databases**: Declared via `Database` CRD in application directories
 - **Users**: Managed via `spec.managed.roles` in cluster.yaml
 - **Credentials**: SealedSecrets with connection URIs
 
 When adding a new service requiring Postgres:
+
 1. Create `database.yaml` with `Database` CRD in application directory
 2. Create sealed secret with connection URI (format: `postgres-{service}-user`)
 3. Add managed role to `infrastructure/postgres/base/cluster.yaml`
 
 ### SealedSecrets
+
 Credentials are encrypted using Bitnami SealedSecrets:
+
 - Encrypted secrets committed to git in `secrets/`
 - Controller decrypts them in-cluster
 - Never commit plain Secrets - always seal them first
 
 ### ArgoCD Sync Waves
+
 Deployments use annotations to control sync order:
+
 - `argocd.argoproj.io/sync-wave: "1"` - Migration jobs
 - `argocd.argoproj.io/sync-wave: "2"` - Application deployments
 - No annotation (wave "0") - Infrastructure and databases
@@ -80,6 +88,7 @@ curl -X POST \
 ```
 
 The workflow:
+
 1. Checks out the master branch
 2. Updates `image:` tags in environment-specific overlay kustomizations
 3. Commits and pushes changes to master
@@ -144,6 +153,7 @@ kubectl get database platform-db -n steady-prod -o yaml
 ### Standard Application Components
 
 Each application typically includes:
+
 - `deployment.yaml` - Main deployment with env vars, secrets, health checks
 - `service.yaml` - ClusterIP service
 - `kustomization.yaml` - Kustomize resource list
@@ -154,6 +164,7 @@ Each application typically includes:
 ### Environment Variables Pattern
 
 Services receive configuration via environment variables:
+
 - Database: `DATABASE_URL` from sealed secret
 - Redis/Valkey: `REDIS_HOST`, `REDIS_PORT` (hardcoded service names)
 - Centrifugo: `CENTRIFUGO_URL`, `CENTRIFUGO_API_KEY`, `CENTRIFUGO_JWT_SECRET`
@@ -162,6 +173,7 @@ Services receive configuration via environment variables:
 ### Health Checks
 
 All services should implement:
+
 - `GET /health` - Liveness probe (basic health)
 - `GET /ready` - Readiness probe (dependencies ready)
 
@@ -234,20 +246,68 @@ git branch --show-current
 
 ## Troubleshooting
 
+### Routing Conflicts and Traffic Misrouting
+
+**CRITICAL: Always verify request routing BEFORE debugging application logic.**
+
+**Symptoms:**
+
+- Application appears to not respond correctly
+- Configuration changes don't take effect
+- Headers or features missing despite being configured
+
+**Common Causes:**
+
+- Orphaned Ingress/IngressRoute resources in other namespaces
+- Duplicate routing rules capturing traffic
+- Load balancer routing to wrong pods/services
+
+**How to Verify Routing:**
+
+```bash
+# 1. Check Traefik access logs to see which pods are handling requests
+kubectl logs -n traefik deployment/traefik --tail=50 | grep "api-stage"
+
+# Look for pod IPs in logs - verify they match your expected environment
+# Example: If you expect stage pods but see prod pod IPs, routing is wrong
+
+# 2. Check for duplicate/orphaned Ingress resources across ALL namespaces
+kubectl get ingress --all-namespaces | grep "api-stage"
+kubectl get ingressroute --all-namespaces | grep "api-stage"
+
+# 3. Delete orphaned resources
+kubectl delete ingress <name> -n <namespace>
+```
+
+**Real Example:**
+
+- CORS headers missing from `api-stage.steady.ops.last-try.org`
+- Direct pod test: CORS headers present ✅
+- Through Traefik: CORS headers missing ❌
+- **Root Cause**: Orphaned Ingress in `steady-prod` namespace was routing api-stage traffic to prod pods (which lacked CORS configuration)
+- **Solution**: `kubectl delete ingress platform-backend -n steady-prod`
+- **Result**: CORS immediately worked perfectly
+
+**Key Takeaway**: Don't assume the ingress controller is broken. Verify routing first.
+
 ### Image Pull Issues
+
 Check `ghcr-pull-secret` SealedSecret exists and is valid.
 
 ### Database Connection Issues
+
 - Verify `Database` CRD exists and has `ensure: present`
 - Check sealed secret contains valid `uri` key
 - Confirm user exists in `postgres` cluster's `spec.managed.roles`
 
 ### Migration Job Failures
+
 - Check Job logs: `kubectl logs -n steady-prod job/platform-backend-migration`
 - Verify `backoffLimit` hasn't been exceeded
 - Ensure migration is idempotent
 
 ### ArgoCD Sync Failures
+
 - Check sync-wave ordering (migrations before deployments)
 - Verify all referenced secrets exist
 - Check resource dependencies (Database CRD before Deployment)
