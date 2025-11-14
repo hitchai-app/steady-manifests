@@ -8,25 +8,38 @@ Accepted (Supersedes ADR-001)
 
 ADR-001 attempted to configure CORS at the Traefik ingress layer using Headers Middleware, following perceived industry best practices. After implementation and testing, this approach failed in our environment.
 
-### What Went Wrong with ADR-001
+### What Actually Went Wrong with ADR-001
 
-**Traefik Middleware Did Not Work As Expected:**
+**Root Cause: Orphaned Ingress Resource (NOT Traefik)**
 
-1. **OPTIONS Requests Not Intercepted**
-   - Traefik Headers Middleware did NOT intercept OPTIONS preflight requests
-   - OPTIONS requests returned 404 from Traefik instead of 204 with CORS headers
-   - Backend needed to handle OPTIONS, but Traefik stripped CORS headers from responses
+Initial testing showed CORS headers missing when accessing `api-stage.steady.ops.last-try.org`. This led to the incorrect conclusion that Traefik was stripping backend CORS headers.
 
-2. **Backend CORS Headers Stripped**
-   - Direct pod test: `OPTIONS /health` → 204 with CORS headers ✅
-   - Through Traefik: `OPTIONS /health` → 404 ❌
-   - Through Traefik: `GET /health` → NO CORS headers ❌
-   - Traefik was removing backend CORS headers from responses
+**The Real Problem:**
 
-3. **Catch-22 Situation**
-   - Can't use backend CORS: Traefik strips headers
-   - Can't use pure ingress CORS: Traefik doesn't intercept OPTIONS
-   - Would need complex debugging of Traefik configuration
+- An orphaned Kubernetes Ingress resource from 32 days prior existed in `steady-prod` namespace
+- This Ingress captured traffic for `api-stage.steady.ops.last-try.org`
+- Routed all api-stage traffic to PROD pods (which didn't have CORS_ORIGINS configured)
+- The stage IngressRoute was being ignored due to this routing conflict
+
+**Initial (Incorrect) Diagnosis:**
+
+1. Tested backend directly: CORS headers present ✅
+2. Tested through Traefik: CORS headers missing ❌
+3. Concluded: "Traefik strips backend CORS headers"
+
+**Actual Issue:**
+
+- Traffic was hitting PROD pods (wrong pods!)
+- PROD pods didn't have new CORS configuration
+- Traefik was working correctly - we were testing the wrong pods
+
+**Resolution:**
+
+- Discovered via Traefik access logs showing prod pod IPs
+- Deleted orphaned Ingress: `kubectl delete ingress platform-backend -n steady-prod`
+- CORS immediately worked perfectly through Traefik ✅
+
+**Key Learning:** Always verify request routing before debugging application logic. Traefik does NOT strip backend CORS headers by default.
 
 ### ADR-001 Incorrect Claims
 
@@ -151,14 +164,35 @@ Environment-specific origins:
 
 ## Testing
 
-**Verification Steps:**
+**Verified Working (2025-11-14):**
 
-1. Test OPTIONS preflight: `curl -X OPTIONS [api-url] -H "Origin: [allowed-origin]"`
-   - Should return 204 with CORS headers
-2. Test actual request: `curl -X GET [api-url] -H "Origin: [allowed-origin]"`
-   - Should return 200 with CORS headers
-3. Test unauthorized origin: Should NOT include CORS headers
-4. Test credentials: Verify `Access-Control-Allow-Credentials: true`
+```bash
+# OPTIONS preflight request
+curl -X OPTIONS https://api-stage.steady.ops.last-try.org/health \
+  -H "Origin: https://app-stage.steady.ops.last-try.org" \
+  -H "Access-Control-Request-Method: GET"
+
+# Result: HTTP/2 204 with all CORS headers ✅
+# access-control-allow-origin: https://app-stage.steady.ops.last-try.org
+# access-control-allow-methods: GET, POST, PUT, DELETE, PATCH, OPTIONS
+# access-control-allow-headers: Content-Type, Authorization, X-Requested-With, X-CSRF-Token
+# access-control-allow-credentials: true
+# access-control-max-age: 86400
+
+# Actual GET request
+curl https://api-stage.steady.ops.last-try.org/health \
+  -H "Origin: https://app-stage.steady.ops.last-try.org"
+
+# Result: HTTP/2 200 with CORS headers ✅
+# access-control-allow-origin: https://app-stage.steady.ops.last-try.org
+# access-control-allow-credentials: true
+```
+
+**Troubleshooting Note:** If CORS appears not to work:
+
+1. Check Traefik logs to verify which pods are handling requests
+2. Look for orphaned Ingress/IngressRoute resources that might conflict
+3. Verify routing before debugging application CORS configuration
 
 ## Security Considerations
 
