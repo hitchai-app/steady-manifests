@@ -13,7 +13,6 @@ resources:
   - ../../infrastructure/valkey/overlays/prod
   - ../../infrastructure/centrifugo/overlays/prod
   - ../../infrastructure/litellm/overlays/prod
-  - ../../infrastructure/traefik-middleware/overlays/prod
   # Applications
   - ../../applications/dev-ui/overlays/prod
   - ../../applications/inference-backend/overlays/prod
