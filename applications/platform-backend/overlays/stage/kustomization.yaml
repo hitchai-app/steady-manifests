@@ -10,4 +10,4 @@ patches:
 
 images:
   - name: ghcr.io/hitchai-app/platform-backend
-    newTag: stage-64457d2f0350c28e0fa8b961523f0d7e9bc83945
+    newTag: stage-574d8512c52c9d95c24e6ec763ae46af833bb1ce
