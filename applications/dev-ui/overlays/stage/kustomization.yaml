@@ -6,4 +6,4 @@ resources:
 
 images:
   - name: ghcr.io/hitchai-app/dev-ui
-    newTag: stage-90bb3a7057bc080def14dcda34390d5cabb5942f
+    newTag: stage-92a34a514b7448d5c43c4af0a891288437835299
